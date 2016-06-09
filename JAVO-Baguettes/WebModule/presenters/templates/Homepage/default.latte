@@ -1,0 +1,78 @@
+{* Copyright (c) 2016 Jan Kotrba https://jkotrba.net/ *}
+{block style}
+<link rel="stylesheet" href="{$basePath}/css/welcome-page.css?">
+{/block}
+{block title}Připravte si svou vlastní BAGETU!{/block}
+{block content}
+<div class="container">
+	<div class="row text-center">
+		<div class="baguette col-md-12">
+			<div class="description">
+				Připravte si svou vlastní<br/>
+				<strong>BAGETU</strong>
+			</div>
+			<img src="{$basePath}/img/food/baguette.png" alt="Welcome Baguette">
+		</div>
+	</div>
+</div>
+<div class="container">
+	<div class="row aboutUs row-eq-height">
+		<div class="col-md-6 hidden-xs">
+			<img src="{$basePath}/img/aboutUsPhoto.jpg" alt="About Us Photo">
+		</div>
+		<div class="col-md-5 col-md-offset-1 col-xs-12">
+			<h2 class="text-center">O nás</h2>
+			<p>
+				Jsme dvojice nenažraných studentů střední školy. Oba milujeme jídlo, každý den se snažíme připravit si něco dobrého k snědku.
+				Daří se nám, proto jsme společně vytvořili tento projekt ve snaze podělit se s Vámi o dobré jídlo.
+				Z našich nejoblíbenějších kousků jsme sestavili <a n:href="Homepage:ourMenu">naše menu</a>.
+				Můžete si ale <a n:href="Builder:default">připravit vlastní</a> bagetu a vyzkoušet nové kombinace. Hotové bagety vám přivezeme.
+				<br/><br/>Přejeme Vám dobrou chuť!
+			</p>
+		</div>
+	</div>
+</div>
+<div class="jumbotron">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-6 col-xs-6">
+				<div class="openTime">
+					<div class="row">
+						<div class="col-md-12">
+							<h2>Otevírací doba</h2>
+						</div>
+					</div>
+					<div class="row dateTime">
+						<div class="col-xs-6 day">Po - Pá</div>
+						<div class="col-xs-6 time">8 - 22</div>
+					</div>
+					<div class="row dateTime">
+						<div class="col-xs-6 day">So</div>
+						<div class="col-xs-6 time">9 - 24</div>
+					</div>
+					<div class="row dateTime">
+						<div class="col-xs-6 day">Ne</div>
+						<div class="col-xs-6 time">10 - 18</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6 col-xs-6 right">
+				<div class="address hidden-xs">
+					<a href="https://www.google.cz/maps/search/Zem%C4%9Bd%C4%9Blsk%C3%A1+1077,+Ro%C5%BEnov+pod+Radho%C5%A1t%C4%9Bm/@49.4610514,18.1323805,18z?hl=en" target="_blank">Zemědělská 1077<br/>
+					Rožnov pod radhoštěm<br/>
+					756 61<br/></a>
+				</div>
+				<div class="col-md-8 col-md-offset-2 col-lg-4 col-lg-offset-4 col-xs-10 col-xs-offset-1">
+					<div class="contact">
+						<i class="glyphicon glyphicon-user"></i>Jan Kotrba & Vojtěch Küffer<br/>
+						<i class="glyphicon glyphicon-phone"></i>736 415 854<br/>
+						<i class="glyphicon glyphicon-envelope"></i>javobaguettes@gmail.com<br/>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{/block}
+{block scripts}
+{/block}

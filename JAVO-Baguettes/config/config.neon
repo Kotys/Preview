@@ -1,0 +1,53 @@
+parameters:
+
+php:
+	date.timezone: Europe/Prague
+
+application:
+	catchExceptions: true
+	errorPresenter: Error
+	mapping:
+		*: App\*Module\Presenters\*Presenter
+
+session:
+	expiration: 14 days
+
+services:
+	# Admin
+	- App\AdminModule\Model\BaguettesManager
+	- App\AdminModule\Model\AdminBaguettesFacade
+	- App\AdminModule\Model\AllergensManager
+	- App\AdminModule\Model\OrdersManager
+	- Tinify\Tinify
+	- App\AdminModule\Model\Tinify
+
+	# Forms
+	- App\AdminModule\Components\AdminLoginFormFactory
+	- App\AdminModule\Components\AddResourceFormFactory
+	- App\AdminModule\Components\EditResourceFormFactory
+	- App\AdminModule\Components\AddToMenuFormFactory
+
+	# Web
+	- App\WebModule\Model\UserRegister
+	- App\WebModule\Model\BaguetteBuilder
+	- App\WebModule\Model\DistanceManager
+	- App\WebModule\Model\BaguetteFacade
+	- App\WebModule\Model\CartManager
+	- App\WebModule\Model\UserManager
+
+	# Forms
+	- App\WebModule\Components\LoginFormFactory
+	- App\WebModule\Components\RegisterFormFactory
+	- App\WebModule\Components\EditMyAccountFormFactory
+	- App\WebModule\Components\SubmitOrderFormFactory
+	- App\WebModule\Components\ChangePasswordFormFactory
+
+	authenticator: App\Model\Authenticator
+	router: App\RouterFactory::createRouter
+
+extensions:
+	console: Kdyby\Console\DI\ConsoleExtension
+	events: Kdyby\Events\DI\EventsExtension
+	annotations: Kdyby\Annotations\DI\AnnotationsExtension
+	doctrine: Kdyby\Doctrine\DI\OrmExtension
+	debugger.session: Kdyby\SessionPanel\DI\SessionPanelExtension

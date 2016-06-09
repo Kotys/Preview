@@ -1,0 +1,35 @@
+{* Copyright (c) 2016 Jan Kotrba https://jkotrba.net/ *}
+{block pageHeader}Uživatelé | {$role}{/block}
+{block content}
+<div class="row">
+	<div class="col-lg-5">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				Všechny položky
+			</div>
+			<div class="panel-body">
+				<div class="table-responsive" n:if="$users">
+					<table class="table">
+						<thead>
+							<tr>
+								<th>Jméno</th>
+								<th>Email</th>
+								<th class="text-right">Akce</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr n:foreach="$users as $user">
+								<td>{$user->getLastName()} {$user->getFirstName()}</td>
+								<td>{$user->getEmail()}</td>
+								<td class="text-right" n:if="$user->getSimpleRole() == 'customer'"><a n:href="SwitchGroup!, $user->getId(), admin">Změnit na účet správce</a></td>
+								<td class="text-right" n:if="$user->getSimpleRole() == 'admin'"><a n:href="SwitchGroup!, $user->getId(), customer">Změnit na účet zákazníka</a></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<p n:if="!$users">Žádní uživatelé v této skupině nejsou.</p>
+			</div>
+		</div>
+	</div>
+</div>
+{/block}

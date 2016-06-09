@@ -1,0 +1,82 @@
+{* Copyright (c) 2016 Jan Kotrba https://jkotrba.net/ *}
+{block pageHeader}Suroviny | {$resource['text']|capitalize}{/block}
+{block content}
+<div class="row">
+	<div class="col-lg-5">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				Všechny položky
+			</div>
+			<div class="panel-body">
+				<div class="table-responsive" n:if="$resources">
+					<table class="table">
+						<thead>
+							<tr>
+								<th style="width:45%">Název</th>
+								<th style="text-align:center;width:15%;">Cena</th>
+								<th>Alergeny</th>
+								<th class="text-right">Akce</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr n:foreach="$resources as $resourceRow">
+								<td>{$resourceRow->getName()}</td>
+								<td style="text-align:center">{$resourceRow->getPrice()} Kč</td>
+								<td n:if="$resourceRow->getAllergens()">{$resourceRow->getAllergens()}</td>
+								<td n:if="!$resourceRow->getAllergens()">Žádné</td>
+								<td class="actions text-right"><a n:href="Resources:edit, $resourceRow->getId()">Upravit</a> <a n:href="Remove!, $resourceRow->getId()">Odstranit</a></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<p n:if="!$resources">Žádné suroviny tohoto typu. Přidejte nějaké.</p>
+			</div>
+		</div>
+	</div>
+	<div class="col-lg-4">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				Přidat
+			</div>
+			<div class="panel-body">
+				<form n:name="addResourceForm" role="form">
+					<div class="form-group">
+						<label>Název</label>
+						<input n:name="name" class="form-control" autocomplete="off">
+					</div>
+					<div class="form-group input-group">
+						<input type="text" n:name="price" class="form-control" autocomplete="off">
+						<span class="input-group-addon">Kč</span>
+					</div>
+					<div class="form-group">
+						<label>Druh</label>
+						{foreach $form[group]->items as $type => $label}
+						<div class="radio">
+							<label>
+							<input type="radio" n:name="group:$type" id="optionsRadios{$iterator->getCounter()}" value="{$type}" {if $resource['type'] == $type} checked=""{/if}> {$label}
+							</label>
+						</div>
+						{/foreach}
+					</div>
+					<div class="form-group">
+						<label>Alergeny</label>
+						{foreach $form[allergens]->items as $key => $label}
+						<label class="checkbox">
+						<label n:name="allergens:$key"><input n:name="allergens:$key"> <b>{$key}.</b> {$label}</label>
+						</label>
+						{/foreach}
+					</div>
+					<div class="row">
+						<div class="col-lg-6">
+							<button type="reset" class="btn btn-default">Zrušit</button>
+						</div>
+						<div class="col-lg-6 text-right">
+							<input n:name="add" type="submit" class="btn btn-warning" value="Přidat">
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+{/block}

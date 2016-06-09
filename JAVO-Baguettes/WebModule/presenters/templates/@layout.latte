@@ -1,0 +1,189 @@
+{* Copyright (c) 2016 Jan Kotrba https://jkotrba.net/ *}
+{block|strip}
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<title>{ifset title}{include title|striptags|trim} | {/ifset}JAVO Baguettes</title>
+		<meta name="description" content="Sestavte si svou vlastní bagetu! Na výběr máte i z našeho menu. Vše Vám můžeme doručit až domů, JAVO Baguettes">
+		<meta name="keywords" content="JAVO Baguettes, bagety, vlastni bagety, rozvoz">
+		<link rel="stylesheet" href="{$basePath}/css/bootstrap.min.css">
+		<link rel="stylesheet" href="{$basePath}/css/sweetalert.min.css">
+		{block style}{/block}
+		<link rel="icon" type="image/png" href="{$basePath}/img/fav.png" />
+	</head>
+	<body>
+		<div n:if="$isRelease" class="warning">Upozornění: Tento web je pouze ilustrační!</div>
+		<div class="alert-box" n:if="$flashes">
+			<div class="col-xs-6 col-xs-offset-3">
+				<div n:foreach="$flashes as $flash" class="alert alert-{$flash->type}">
+					{if $flash->type == "danger"}
+					<span class="glyphicon glyphicon-remove" aria-hidden="true"></span><strong>Chyba:</strong>{strip_tags($flash->message, "<b>")}
+					{elseif $flash->type == "success"}
+					<span class="glyphicon glyphicon-ok" aria-hidden="true"></span><strong>Hotovo:</strong>{strip_tags($flash->message, "<b>")}
+					{else}
+					<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span><strong>Informace:</strong>{strip_tags($flash->message, "<b>")}
+					{/if}
+					<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+				</div>
+			</div>
+		</div>
+		<div n:tag-ifCurrent="Builder:default" class="wrapper">
+			<div class="container">
+				<header>
+					<nav class="row row-eq-height">
+						<div class="col-xs-4">
+							<h1><a n:href="Homepage:default"><img src="{$basePath}/img/logo.svg" alt="Javo Bagguettes"></a></h1>
+						</div>
+						<div class="col-xs-8 text-right">
+							<ul>
+								<li><a href="#" id="baguetteNavModalButton" data-toggle="modal" data-target="#baguetteNavModal">Chci bagetu</a></li>
+								<li n:if="!$user->isLoggedIn()"><a href="#" class="green-bg ajax" data-toggle="modal" data-target="#loginModal">Přihlášení</a></li>
+								<li n:if="$user->isLoggedIn()"><a class="userName" n:href="MyAccount:default">{$userData['fullName']}</a></li>
+								<li n:if="$user->isLoggedIn()"><a n:href="LogOut!" class="green-bg">Odhlásit se</a></li>
+								<li><span class="badge">{$cart->getCount()}</span><a n:href="Cart:default" class="cartImg"></a></li>
+							</ul>
+						</div>
+					</nav>
+				</header>
+				<div n:if="!$user->isLoggedIn()" class="modal fade-in" id="loginModal" tabindex="-1" role="dialog">
+					<div class="modal-dialog" role="document">
+						<div class="modal-content">
+							<form n:name="loginForm" class="login-form" autocomplete="off">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"><i class="glyphicon glyphicon-remove"></i></span></button>
+									<h4 class="modal-title">Přihlášení zákazníka</h4>
+									<div class="loader hidden"></div>
+									{snippet loginStatus}
+									<div n:ifset="$loginStatus" class="alert alert-danger">
+										<span class="glyphicon glyphicon-remove" aria-hidden="true"></span><strong>Chyba:</strong> {$loginStatus->message|noescape}
+									</div>
+									{/snippet}
+								</div>
+								<div class="modal-body">
+									<div class="row">
+										<div class="col-xs-4 text-right"><label for="email">E-mail:</label></div>
+										<div class="col-xs-8 "><input type="text" n:name="email" placeholder="Zadejte váš email..." id="email" autocomplete="off"></div>
+									</div>
+									<div class="row">
+										<div class="col-xs-4 text-right"><label for="password">Heslo:</label></div>
+										<div class="col-xs-8 "><input type="password" n:name="password" placeholder="Zadejte vaše heslo..." id="password" autocomplete="off"></div>
+									</div>
+								</div>
+								<div class="modal-footer">
+									<div class="row">
+										<div class="col-xs-6 actions"><a href="#" id="showRegister" data-toggle="modal" data-target="#registerModal" data-dismiss="modal">Nemáte svůj ůčet?</a></div>
+										<div class="col-xs-6 text-right"><input type="submit" n:name="submit" class="btn btn-default ajax" value="Přihlásit se"></div>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+				<div n:if="!$user->isLoggedIn()" class="modal fade" id="registerModal" tabindex="-1" role="dialog">
+					<div class="modal-dialog" role="document">
+						<div class="modal-content">
+							<form n:name="registerForm" class="register-form" autocomplete="off">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"><i class="glyphicon glyphicon-remove"></i></span></button>
+									<h4 class="modal-title">Registrace zákazníka</h4>
+									<div class="loader hidden"></div>
+									{snippet registerStatus}
+									<div n:ifset="$registerStatus" class="alert alert-danger">
+										<span class="glyphicon glyphicon-remove" aria-hidden="true"></span><strong>Chyba:</strong> {$registerStatus->message|noescape}
+									</div>
+									{/snippet}
+								</div>
+								<div class="modal-body">
+									<div class="row">
+										<div class="col-xs-4 text-right"><label for="firstname">Jméno:</label></div>
+										<div class="col-xs-8"><input type="text" autocomplete="off" n:name="firstName" placeholder="Zadejte váše jméno..." id="firstname"></div>
+									</div>
+									<div class="row">
+										<div class="col-xs-4 text-right"><label for="lastname">Příjmení:</label></div>
+										<div class="col-xs-8"><input type="text" autocomplete="off" n:name="lastName" placeholder="Zadejte váše příjmení..." id="lastname"></div>
+									</div>
+									<div class="row">
+										<div class="col-xs-4 text-right"><label for="email_reg">E-mail:</label></div>
+										<div class="col-xs-8"><input type="text" autocomplete="off" n:name="email" placeholder="Zadejte váš email..." id="email_reg"></div>
+									</div>
+									<div class="row">
+										<div class="col-xs-4 text-right"><label for="phone">Telefon:</label></div>
+										<div class="col-xs-8"><input type="text" autocomplete="off" n:name="phone" placeholder="Zadejte váš telefon..." id="phone"></div>
+									</div>
+									<div class="row">
+										<div class="col-xs-4 text-right"><label for="password_reg">Heslo:</label></div>
+										<div class="col-xs-8"><input type="password" autocomplete="off" n:name="password" placeholder="Zadejte vaše heslo..." id="password_reg"></div>
+									</div>
+									<div class="row">
+										<div class="col-xs-4 text-right"><label for="password_check">Heslo kontrola:</label></div>
+										<div class="col-xs-8"><input type="password" autocomplete="off" n:name="password_check" placeholder="Zadejte vaše heslo pro kontrolu..." id="password_check"></div>
+									</div>
+									<div class="row">
+										<div class="col-xs-4 text-right"><label for="street">Ulice a ČP:</label></div>
+										<div class="col-xs-8"><input type="text" autocomplete="off" n:name="street" placeholder="Zadejte váši ulici a číslo popisné..." id="street"></div>
+									</div>
+									<div class="row">
+										<div class="col-xs-4 text-right"><label for="town">Město:</label></div>
+										<div class="col-xs-8"><input type="text" autocomplete="off" n:name="town" placeholder="Zadejte váše město..." id="town"></div>
+									</div>
+									<div class="row">
+										<div class="col-xs-4 text-right"><label for="psc">PSČ:</label></div>
+										<div class="col-xs-8"><input type="text" autocomplete="off" n:name="psc" placeholder="Zadejte váše PSČ..." id="psc"></div>
+									</div>
+									<div class="row">
+										<div class="col-xs-4 text-right"><label for="province">Stát:</label></div>
+										<div class="col-xs-8"><input type="text" autocomplete="off" n:name="province" placeholder="Zadejte stát ve kterém žijete.." id="province"></div>
+									</div>
+								</div>
+								<div class="modal-footer">
+									<div class="row">
+										<div class="col-xs-6 actions"><a href="#" data-toggle="modal" data-target="#loginModal" data-dismiss="modal">Zpět k přihlášení</a></div>
+										<div class="col-xs-6 text-right"><input n:name="submit" type="submit" class="btn btn-default ajax" value="Registrovat se"></div>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+				<div class="modal fade in" id="baguetteNavModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+					<div class="modal-dialog modal-lg" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"><i class="glyphicon glyphicon-remove"></i></span></button>
+								<h4 class="modal-title" id="myModalLabel">Máme pro Vás širokou nabídku baget,<br/>
+									<small>ale pokud chcete, můžete si vytvořit vlastní.</small>
+								</h4>
+							</div>
+							<div class="modal-body">
+								<div class="row">
+									<div class="col-lg-6 col-md-6 col-xs-6 text-center"><a n:href="Homepage:our-menu"><img src="{$basePath}/img/ourMenu/our-menu.png" alt="Our Menu Image"></a></div>
+									<div class="col-lg-6 col-md-6 col-xs-6 text-center"><a n:href="Builder:default"><img src="{$basePath}/img/ourMenu/custom.png" alt="Custom Builder Image"></a></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			{include content}
+		</div>
+		<script src="{$basePath}/js/jquery-1.11.3.min.js"></script>
+		<script src="{$basePath}/js/sweetalert.min.js"></script>
+		<script src="{$basePath}/js/netteForms.min.js"></script>
+		<script src="{$basePath}/js/nette.ajax.min.js"></script>
+		<script src="{$basePath}/js/bootstrap.min.js"></script>
+		<script src="{$basePath}/js/LayoutInteraction.min.js"></script>
+		{block scripts}{/block}
+		<script>
+			(function(i,s,o,g,r,a,m){ i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+			m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+			})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+			ga('create', 'UA-62673272-8', 'auto');
+			ga('send', 'pageview');
+		</script>
+	</body>
+</html>
+{/block}

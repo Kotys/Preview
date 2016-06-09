@@ -1,0 +1,135 @@
+{* Copyright (c) 2016 Jan Kotrba https://jkotrba.net/ *}
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="icon" type="image/png" href="{$basePath}/img/fav.png" />
+		<title>{ifset title}{include title|striptags|trim} | {/ifset}JAVO Admin</title>
+		<link href="{$basePath}/adminResources/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+		<link href="{$basePath}/adminResources/bower_components/metisMenu/dist/metisMenu.min.css" rel="stylesheet">
+		<link href="{$basePath}/adminResources/css/sb-admin-2.min.css" rel="stylesheet">
+		<link href="{$basePath}/css/sweetalert.min.css" rel="stylesheet">
+		<link href="{$basePath}/adminResources/bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+		{ifset head}
+		{include head}
+		{/ifset}
+	</head>
+	<body>
+		<div id="wrapper">
+			<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" n:href="Dashboard:default">JAVO Admin</a>
+				</div>
+				<ul class="nav navbar-top-links navbar-right">
+					<li class="dropdown userPanel">
+						<a class="dropdown-toggle" data-toggle="dropdown" href="#">
+						{$userData['fullName']} <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
+						</a>
+						<ul class="dropdown-menu dropdown-user">
+							<li>
+								<a n:href="LogOut!"><i class="fa fa-sign-out fa-fw"></i> Odhlásit se</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+				<div class="navbar-default sidebar" role="navigation">
+					<div class="sidebar-nav navbar-collapse">
+						<ul class="nav" id="side-menu">
+							<li>
+								<a n:href="Dashboard:default"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+							</li>
+							<li>
+								<a n:href="Orders:all"><i class="fa fa-clock-o fa-fw"></i> Objednávky</a>
+							</li>
+							<li>
+								<a href="#uzivatele"><i class="fa fa-users fa-fw"></i> Uživatelé<span class="fa arrow"></span></a>
+								<ul class="nav nav-second-level collapse">
+									<li>
+										<a n:href="Users:all, zakaznici">Zákaznící</a>
+									</li>
+									<li>
+										<a n:href="Users:all, spravci">Správci</a>
+									</li>
+								</ul>
+							</li>
+							<li>
+								<a href="#nase-menu"><i class="fa fa-list-ul fa-fw"></i> Naše menu<span class="fa arrow"></span></a>
+								<ul class="nav nav-second-level">
+									<li>
+										<a n:href="OurMenu:all">Obsah menu</a>
+									</li>
+									<li>
+										<a n:href="OurMenu:add">Přidat do menu</a>
+									</li>
+								</ul>
+							</li>
+							<li>
+								<a href="#nase-menu"><i class="fa fa-list-ul fa-fw"></i> Suroviny<span class="fa arrow"></span></a>
+								<ul class="nav nav-second-level">
+									<li>
+										<a n:href="Resources:resource, pecivo">Pečivo</a>
+									</li>
+									<li>
+										<a  n:href="Resources:resource, napln">Náplň</a>
+									</li>
+									<li>
+										<a n:href="Resources:resource, zelenina">Zelenina</a>
+									</li>
+									<li>
+										<a n:href="Resources:resource, dresink">Dresink</a>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</nav>
+			<div id="page-wrapper">
+				<div class="row">
+					<div class="col-lg-12">
+						<h1 class="page-header" n:block="title">{include pageHeader}</h1>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-lg-6 flex">
+						<div class="alert-box" n:if="$flashes">
+							<div n:foreach="$flashes as $flash" class="alert alert-{$flash->type} alert-dismissable">
+								<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+								{if $flash->type == "danger"}
+								<strong>Chyba:</strong>
+								{elseif $flash->type == "success"}
+								<strong>Hotovo:</strong>
+								{else}
+								<strong>Informace:</strong>
+								{/if}
+								<br />{$flash->message|noescape}
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-lg-8 flex">
+						{include content}
+					</div>
+				</div>
+			</div>
+		</div>
+		<script src="{$basePath}/adminResources/bower_components/jquery/dist/jquery.min.js"></script>
+		<script src="{$basePath}/adminResources/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+		<script src="{$basePath}/js/sweetalert.min.js"></script>
+		<script src="{$basePath}/js/netteForms.min.js"></script>
+		<script src="{$basePath}/adminResources/bower_components/metisMenu/dist/metisMenu.min.js"></script>
+		<script src="{$basePath}/adminResources/js/sb-admin-2.min.js"></script>
+		{ifset script}
+		{include script}
+		{/ifset}
+	</body>
+</html>

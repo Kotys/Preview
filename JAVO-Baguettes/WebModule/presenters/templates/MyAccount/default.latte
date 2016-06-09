@@ -1,0 +1,42 @@
+{* Copyright (c) 2016 Jan Kotrba https://jkotrba.net/ *}
+{block style}
+<link rel="stylesheet" href="{$basePath}/css/myaccount-page.css">
+{/block}
+{block title}Objednáky{/block}
+{block content}
+<div class="container my-account">
+	<div class="row text-center">
+		<div class="col-xs-12">
+			<h2>Můj účet</h2>
+			<p>
+				<span class="username">{$userData['fullName']}</span><br />
+				{$userData['email']}
+			</p>
+		</div>
+	</div>
+	{include '_myAccountMenu.latte'}
+	<div class="row text-center">
+		<div class="col-lg-6 col-lg-offset-3 col-md-10 col-md-offset-1">
+			<div class="col-xs-12">
+				<table class="table">
+					<tr n:if="$orders">
+						<th>Číslo objednávky</th>
+						<th>Datum</th>
+						<th>Cena</th>
+					</tr>
+					<tbody n:inner-foreach="$orders as $order">
+						<tr class="tableRow">
+							<td><a n:href="MyAccount:order, $order->getId()">#{$order->getId()}</a></td>
+							<td>{$order->getDateOfPurchase()|date:'%d.%m.%Y'} {$order->getDateOfPurchase()|date:'H:i'}</td>
+							<td>{$order->getTotalPrice()} KČ</td>
+						</tr>
+					</tbody>
+					<tr n:if="!$orders" class='empty'>
+						<td colspan="3" class="text-center">Žádné objednávky. <a href=''>Nemáte na něco chuť?</a></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+{/block}

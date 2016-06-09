@@ -1,0 +1,116 @@
+{* Copyright (c) 2016 Jan Kotrba https://jkotrba.net/ *}
+{block style}
+<link rel="stylesheet" href="{$basePath}/css/myaccount-page.css">
+<link rel="stylesheet" href="{$basePath}/css/cart-page.css">
+{/block}
+{block title}Objednávka #{$order->getId()}{/block}
+{block content}
+<div class="container cart">
+	<div class="row text-center">
+		<div class="col-xs-12">
+			<h2>Objednávka</h2>
+			<p>
+				<span>číslo</span><br/>
+				#{$order->getId()}
+			</p>
+		</div>
+	</div>
+	<div class="row text-center">
+		<div class="col-xs-12">
+			<h3>Vaše objednávka</h3>
+		</div>
+	</div>
+	<div class="row text-center">
+		<div class="col-lg-6 col-lg-offset-3 col-md-10 col-md-offset-1">
+			<table class="table list" n:inner-foreach="$order->getBaguettes() as $row => $baguette">
+				<tr n:for="$repeat = 1; $repeat <= $baguette->getCount(); $repeat++">
+					<td>
+						{$baguette->getBaguetteName()} <img src="{$basePath}/img/arrow.png" class="showMore">
+						<div class="moreInfo">
+							<table>
+								<tr>
+									<td>Náplň:</td>
+									<td>{implode(', ', $baguette->getFillingsArray())}</td>
+								</tr>
+								<tr>
+									<td>Pečivo:</td>
+									<td>{$baguette->getBakedGoods()->getName()}</td>
+								</tr>
+								<tr>
+									<td>Dresink:</td>
+									<td>{implode(', ', $baguette->getDressingArray())}</td>
+								</tr>
+								<tr>
+									<td>Alergeny:</td>
+									<td>{implode(', ', $baguette->getAllergens())}</td>
+								</tr>
+							</table>
+						</div>
+					</td>
+					<td>
+						<span>{$baguette->getPrice()}</span> Kč
+					</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+	<div class="row text-center">
+		<div class="col-xs-12">
+			<h3>Vaše objednávka</h3>
+		</div>
+	</div>
+	<div class="row details">
+		<div class="row text-center">
+			<div class="col-xs-12 title">Zpusob doruceni a platba</div>
+			<div class="col-xs-12">
+				{if $order->getDeliveryType() == 'delivery'}JAVO Delivery<br/>{/if}
+				{if $order->getDeliveryType() == 'self'}Vyzvednutí na prodejně<br/>{/if}
+				{if $order->getPaymentMethod() == 'cash'}Hotově<br/>{/if}
+				{if $order->getPaymentMethod() == 'card'}Kartou<br/>{/if}
+			</div>
+		</div>
+		<div class="row text-center">
+			<div class="col-xs-12 title">Email</div>
+			<div class="col-xs-12">
+				{$order->getBillingEmail()}
+			</div>
+		</div>
+		<div class="row text-center">
+			<div class="col-xs-12 title">Telefon</div>
+			<div class="col-xs-12">
+				{$order->getBillingPhone()}
+			</div>
+		</div>
+		<div class="row text-center">
+			<div class="col-xs-12 title">Fakturační adresa</div>
+			<div class="col-xs-12">
+				{$order->getBillingLastName()} {$order->getBillingFirstName()}<br/><br/>
+				{$order->getBillingStreet()}<br/>
+				{$order->getBillingTown()} {$order->getBillingPsc()}<br/>
+				{$order->getBillingProvince()}
+			</div>
+		</div>
+		<div class="row text-center" n:if="$order->getDifferentDelivery()">
+			<div class="col-xs-12 title">Dodací adresa</div>
+			<div class="col-xs-12">
+				{$order->getDeliveryLastName()} {$order->getDeliveryFirstName()}<br/><br/>
+				{$order->getDeliveryStreet()}<br/>
+				{$order->getDeliveryTown()} {$order->getDeliveryPsc()}<br/>
+				{$order->getDeliveryProvince()}
+			</div>
+		</div>
+		<div class="row text-center">
+			<div class="col-xs-12 submitOrder">
+				<div>Cena za bagety: <span>{$order->getBaguettesPrice()} KČ</span></div>
+				{if $order->getDeliveryPrice() > 0}
+				<div>Cena dopravy: <span>{$order->getDeliveryPrice()} KČ</span></div>
+				{/if}
+				<div>Celková cena objednávky: <span>{$order->getTotalPrice()} KČ</span></div>
+			</div>
+		</div>
+	</div>
+</div>
+{/block}
+{block scripts}
+<script src="{$basePath}/js/OrderInteraction.min.js"></script>
+{/block}

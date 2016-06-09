@@ -1,0 +1,60 @@
+{* Copyright (c) 2016 Jan Kotrba https://jkotrba.net/ *}
+{block style}
+<link rel="stylesheet" href="{$basePath}/css/myaccount-page.css">
+{/block}
+{block title}Osobní ůdaje{/block}
+{block content}
+<div class="container my-account">
+	<div class="row text-center">
+		<div class="col-xs-12">
+			<h2>Můj účet</h2>
+			<p>
+				<span class="username">{$userData['fullName']}</span><br />
+				{$userData['email']}
+			</p>
+		</div>
+	</div>
+	{include '_myAccountMenu.latte'}
+	<div class="row text-center">
+		<div class="col-lg-4 col-lg-offset-4 col-md-8 col-md-offset-2 col-xs-10 col-xs-offset-1">
+			<form n:name="editMyAccountForm" class="register-form" autocomplete="off">
+				<div class="row">
+					<div class="col-xs-4 text-right"><label for="firstname">Jméno:</label></div>
+					<div class="col-xs-8"><input type="text" autocomplete="off" n:name="firstName" placeholder="Zadejte váše jméno..." id="firstname"></div>
+				</div>
+				<div class="row">
+					<div class="col-xs-4 text-right"><label for="lastname">Příjmení:</label></div>
+					<div class="col-xs-8"><input type="text" autocomplete="off" n:name="lastName" placeholder="Zadejte váše příjmení..." id="lastname"></div>
+				</div>
+				<div class="row">
+					<div class="col-xs-4 text-right"><label for="email_reg">Email:</label></div>
+					<div class="col-xs-8"><input type="text" autocomplete="off" n:name="email" placeholder="Zadejte váš email..." id="email_reg"></div>
+				</div>
+				<div class="row">
+					<div class="col-xs-4 text-right"><label for="phone">Telefo</label></div>
+					<div class="col-xs-8"><input type="text" autocomplete="off" n:name="phone" placeholder="Zadejte váš telefon..." id="phone"></div>
+				</div>
+				<div class="row">
+					<div class="col-xs-4 text-right"><label for="town">Město:</label></div>
+					<div class="col-xs-8"><input type="text" autocomplete="off" n:name="town" placeholder="Zadejte váše město..." id="town"></div>
+				</div>
+				<div class="row">
+					<div class="col-xs-4 text-right"><label for="street">Ulice a ČP:</label></div>
+					<div class="col-xs-8"><input type="text" autocomplete="off" n:name="street" placeholder="Zadejte váši ulici a číslo popisné..." id="street"></div>
+				</div>
+				<div class="row">
+					<div class="col-xs-4 text-right"><label for="psc">PSČ:</label></div>
+					<div class="col-xs-8"><input type="text" autocomplete="off" n:name="psc" placeholder="Zadejte váše PSČ..." id="psc"></div>
+				</div>
+				<div class="row">
+					<div class="col-xs-4 text-right"><label for="province">Stát:</label></div>
+					<div class="col-xs-8"><input type="text" autocomplete="off" n:name="province" placeholder="Zadejte stát ve kterém žijete.." id="province"></div>
+				</div>
+				<div class="row">
+					<input n:name="save" type="submit" class="btn btn-default" value="Uložit změny">
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+{/block}

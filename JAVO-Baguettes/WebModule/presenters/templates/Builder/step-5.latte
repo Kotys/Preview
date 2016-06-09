@@ -1,0 +1,75 @@
+{* Copyright (c) 2016 Jan Kotrba https://jkotrba.net/ *}
+{block style}
+<link rel="stylesheet" href="{$basePath}/css/builder.css">
+{/block}
+{block content}
+<div class="builder customBuilder">
+	<div class="container">
+		<div class="row row-eq-height">
+			<div class="col-xs-1 arrows"><a class="arrow-left" n:href="PrevStep!"></a></div>
+			<div class="col-xs-10">
+				{include '_builderMenu.latte'}
+				<div class="row description text-center">
+					<h2>Dokončení bagety</h2>
+					<p>Zkontrolujte si, zda má Vaše bageta přesně to,<br/> co jste v ní chtěli mít, pokud vše sedí,<br/> dokončete svou bagetu.</p>
+				</div>
+				<div class="row">
+					<div class="col-lg-6 col-lg-offset-3">
+						<table class="table builderSummary">
+							<tr class="separate" n:if="$customBaguette->getBakedGoods()">
+								<td class="type"><span><a n:href='Builder:compilation, 1'>Pečivo</a></span></td>
+								<td class="price">{$customBaguette->getBakedGoods()->getCustomerPrice()} <span>Kč</span></td>
+								<td>{$customBaguette->getBakedGoods()->getName()}</td>
+							</tr>
+							{foreach $customBaguette->getFillings() as $filling}
+							<tr n:class="$iterator->isFirst() ? separate">
+								<td n:if="$iterator->isFirst()" class="type"><span><a n:href='Builder:compilation, 2'>Náplň bagety</a></span></td>
+								<td n:if="!$iterator->isFirst()" class="type"></td>
+								<td n:class="$iterator->isFirst() ? price : price-roll">{$filling->getCustomerPrice()} <span>Kč</span></td>
+								<td n:class="!$iterator->isFirst() ? toTheSky">{$filling->getName()}</td>
+							</tr>
+							{/foreach}
+							{foreach $customBaguette->getVegetables() as $filling}
+							<tr n:class="$iterator->isFirst() ? separate">
+								<td n:if="$iterator->isFirst()" class="type"><span><a n:href='Builder:compilation, 3'>Zelenina</a></span></td>
+								<td n:if="!$iterator->isFirst()" class="type"></td>
+								<td n:class="$iterator->isFirst() ? price : price-roll">{$filling->getCustomerPrice()} <span>Kč</span></td>
+								<td n:class="!$iterator->isFirst() ? toTheSky">{$filling->getName()}</td>
+							</tr>
+							{/foreach}
+							{foreach $customBaguette->getDressing() as $filling}
+							<tr n:class="$iterator->isFirst() ? separate">
+								<td n:if="$iterator->isFirst()" class="type"><span><a n:href='Builder:compilation, 4'>Dresing</a></span></td>
+								<td n:if="!$iterator->isFirst()" class="type"></td>
+								<td n:class="$iterator->isFirst() ? price : price-roll">{$filling->getCustomerPrice()} <span>Kč</span></td>
+								<td n:class="!$iterator->isFirst() ? toTheSky">{$filling->getName()}</td>
+							</tr>
+							{/foreach}
+							<tr class="spacer">
+								<td colspan="3"></td>
+							</tr>
+							<tr class="priceSummary" n:if="count($customBaguette->getFillings()) OR count($customBaguette->getBakedGoods()) OR count($customBaguette->getVegetables()) OR count($customBaguette->getDressing())">
+								<td></td>
+								<td  class="price">{$totalPrice} <span>Kč</span></td>
+								<td>Celkem</td>
+							</tr>
+						</table>
+						<div class="row builderActions">
+							<div class="col-lg-6">
+								<a n:href="ResetBuilder!" class="red-bg">Začít znovu</a>
+							</div>
+							<div class="col-lg-6 text-right">
+								<a n:href="AddToCart!" class="green-bg">Přidat do košíku</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-xs-1 arrows"><a class="arrow-right" n:href="NextStep!" n:if="!$nav->isLast()"></a></div>
+		</div>
+	</div>
+</div>
+{/block}
+{block scripts}
+<script src="{$basePath}/js/builderKeyNav.min.js"></script>
+{/block}

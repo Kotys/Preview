@@ -1,0 +1,189 @@
+{* Copyright (c) 2016 Jan Kotrba https://jkotrba.net/ *}
+{block pageHeader}Objednávky | Detail{/block}
+{block content}
+<div class="row">
+	<div class="col-lg-8">
+		<div class="col-lg-6">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					Fakturační adresa
+				</div>
+				<div class="panel-body">
+					<div class="table-responsive">
+						<table class="table">
+							<tbody>
+								<tr>
+									<td>Jméno</td>
+									<td>{$order->getBillingFirstName()}</td>
+								</tr>
+								<tr>
+									<td>Příjmení</td>
+									<td>{$order->getBillingLastName()}</td>
+								</tr>
+								<tr>
+									<td>Email</td>
+									<td>{$order->getBillingEmail()}</td>
+								</tr>
+								<tr>
+									<td>Telefon</td>
+									<td>{$order->getBillingPhone()}</td>
+								</tr>
+								<tr>
+									<td>Ulice a č.p.</td>
+									<td>{$order->getBillingStreet()}</td>
+								</tr>
+								<tr>
+									<td>Město</td>
+									<td>{$order->getBillingTown()} {$order->getBillingPSC()}</td>
+								</tr>
+								<tr>
+									<td>Stát</td>
+									<td>{$order->getBillingProvince()}</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-6" >
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					Dodací adresa
+				</div>
+				<div class="panel-body">
+					<div class="table-responsive">
+						<table class="table"  n:if="$order->getDifferentDelivery()">
+							<tbody>
+								<tr>
+									<td>Jméno</td>
+									<td>{$order->getDeliveryFirstName()}</td>
+								</tr>
+								<tr>
+									<td>Příjmení</td>
+									<td>{$order->getDeliveryLastName()}</td>
+								</tr>
+								<tr>
+									<td>Ulice a č.p.</td>
+									<td>{$order->getDeliveryStreet()}</td>
+								</tr>
+								<tr>
+									<td>Město</td>
+									<td>{$order->getDeliveryTown()} {$order->getDeliveryPSC()}</td>
+								</tr>
+								<tr>
+									<td>Stát</td>
+									<td>{$order->getDeliveryProvince()}</td>
+								</tr>
+							</tbody>
+						</table>
+						<p n:if="!$order->getDifferentDelivery()">Stejná jako fakturační.</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-lg-8">
+		<div class="col-lg-12">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					Platba a doručení
+				</div>
+				<div class="panel-body">
+					<div class="col-lg-12">
+						<div class="table-responsive">
+							<table class="table">
+								<tbody>
+									<tr>
+										<td>Doručení</td>
+										<td n:if="$order->getDeliveryType() == 'self'">Vyzvednutí na prodejně</td>
+										<td n:if="$order->getDeliveryType() == 'delivery'">JAVO Delivery</td>
+									</tr>
+									<tr n:if="$order->getDeliveryType() == 'delivery'">
+										<td>Adresa doručení</td>
+										<td n:if="!$order->getDifferentDelivery()"><b>{$order->getBillingStreet()}, {$order->getBillingTown()} {$order->getBillingPSC()}</b></td>
+										<td n:if="$order->getDifferentDelivery()"><b>{$order->getDeliveryStreet()}, {$order->getDeliveryTown()} {$order->getDeliveryPSC()}</b></td>
+									</tr>
+									<tr>
+										<td>Ideální čas doručení</td>
+										<td>{$order->getExpectedDelivery()|date:'H:i'} {$order->getExpectedDelivery()|date:'%d.%m.%Y'}</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-lg-8">
+		<div class="col-lg-12">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					Obsah objednávky
+				</div>
+				<div class="panel-body">
+					<div class="table-responsive">
+						<table class="table">
+							<thead>
+								<th style="min-width:200px;">Název bagety</th>
+								<th>Složení</th>
+							</thead>
+							<tbody n:inner-foreach="$order->getBaguettes() as $baguette">
+								<tr>
+									<td>{$baguette->getBaguetteName()}{if $baguette->getCount() > 1} <b>{$baguette->getCount()}ks</b>{/if}</td>
+									<td>{implode(', ' , $baguette->getFillingsArray())}</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-lg-8">
+		<div class="col-lg-12">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					Cena
+				</div>
+				<div class="panel-body">
+					<div class="col-lg-4">
+						<div class="table-responsive">
+							<table class="table">
+								<tbody>
+									<tr>
+										<td>Cena baget</td>
+										<td>{$order->getBaguettesPrice()} Kč</td>
+									</tr>
+									<tr n:if="$order->getDeliveryType() == 'delivery'">
+										<td>Cena doručení</td>
+										<td>{$order->getDeliveryPrice()} Kč</td>
+									</tr>
+									<tr>
+										<td>Cena celkem</td>
+										<td><b>{$order->getTotalPrice()} Kč</b></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="row" n:if="!$order->getProcessed()">
+	<div class="col-lg-8">
+		<div class="col-lg-12 finish-order text-center">
+			<a class="btn btn-success" n:href='ExecuteOrder!, $order->getId()'>Dokončit objednávku</a>
+		</div>
+	</div>
+</div>
+{/block}

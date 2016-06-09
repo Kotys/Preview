@@ -1,0 +1,44 @@
+{* Copyright (c) 2016 Jan Kotrba https://jkotrba.net/ *}
+{block style}
+<link rel="stylesheet" href="{$basePath}/css/builder.css">
+{/block}
+{block content}
+<div class="builder customBuilder">
+	<div class="container">
+		<div class="row row-eq-height">
+			<div class="col-xs-1 arrows"><a class="arrow-left" n:href="PrevStep!"></a></div>
+			<div class="col-xs-10">
+				{include '_builderMenu.latte'}
+				<div class="row description text-center">
+					<h2>Náplň bagety</h2>
+					<p>V tomto kroku si do své bagety dáte přesně to,<br/> na co máte chuť.</p>
+				</div>
+				<div class="row simple-selection">
+					<div class="col-lg-10 col-lg-offset-1 flex">
+						<form n:name="selectFilling">
+							<div class="row">
+								{foreach $form['filling']->items as $key => $label}
+								{var $customLabel = explode('~', $label);}
+								<div class="col-md-6">
+									<div class="row row-eq-height">
+										<div class="col-xs-10">
+											<input type="checkbox" n:name="filling:$key"/>
+											<label n:name="filling:$key"><span></span> {$customLabel[0]}</label>
+										</div>
+										<div class="col-xs-2 price"><span>{$customLabel[1]}</span> Kč</div>
+									</div>
+								</div>
+								{/foreach}
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+			<div class="col-xs-1 arrows"><a class="arrow-right" n:href="NextStep!" n:if="!$nav->isLast()"></a></div>
+		</div>
+	</div>
+</div>
+{/block}
+{block scripts}
+<script src="{$basePath}/js/builderKeyNav.min.js"></script>
+{/block}

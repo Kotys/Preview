@@ -1,0 +1,110 @@
+{* Copyright (c) 2016 Jan Kotrba https://jkotrba.net/ *}
+{block style}
+<link rel="stylesheet" href="{$basePath}/css/our-menu.css">
+{/block}
+{block content}
+<div class="container our-menu">
+	<div class="row">
+		<div class="col-xs-10 col-xs-offset-1 col-md-10 col-md-offset-1 our-menu-heading">
+			<h2 n:block="title">Naše menu</h2>
+		</div>
+	</div>
+	<div class="row text-right">
+		<div class="col-xs-12 description">
+			<p>zde jsme pro Vás<br/>vybrali ty nejlepší<br/>z nejlepších.</p>
+		</div>
+	</div>
+	<div class="list" n:inner-foreach="$baguettes as $baguette">
+		<div n:if="!$iterator->isFirst() AND $iterator->isOdd()" class="triangle right-down"></div>
+		<div n:if="$iterator->isEven()" class="triangle right-up"></div>
+		<div n:if="$iterator->isOdd()" class="row red">
+			<div class="col-xs-12 text-center">
+				<div class="priceBadge">{$baguette->getPrice()},-</div>
+			</div>
+			<div class="col-xs-6">
+				<img src="{$basePath}/upload/our-menu/{$baguette->getImageLeft()}" alt="Baguette Image">
+			</div>
+			<div class="col-xs-6 text-center">
+				<ul>
+					<li>
+						<h3 n:class="$baguette->getBaguetteName() == 'Mozzarella' ? mozzarella-fix">{$baguette->getBaguetteName()}</h3>
+						<span class="type">bageta</span>
+					</li>
+					<li class="desc">{$baguette->getTemptation()|noescape}<br/><a class="more" href="javascript:showMore({$baguette->getId()})">více informací</a></li>
+				</ul>
+			</div>
+		</div>
+		<div n:if="$iterator->isEven()" class="row orange">
+			<div class="col-xs-12 text-center">
+				<div class="priceBadge">{$baguette->getPrice()},-</div>
+			</div>
+			<div class="col-xs-6 text-center">
+				<ul>
+					<li>
+						<h3 n:class="$baguette->getBaguetteName() == 'Mozzarelová' ? mozzarella-fix">{$baguette->getBaguetteName()}</h3>
+						<span class="type">bageta</span>
+					</li>
+					<li class="desc">{$baguette->getTemptation()|noescape}<br/><a class="more" href="javascript:showMore({$baguette->getId()})">více informací</a></li>
+				</ul>
+			</div>
+			<div class="col-xs-6">
+				<img src="{$basePath}/upload/our-menu/{$baguette->getImageRight()}" alt="Baguette Image">
+			</div>
+		</div>
+		<div class="baguette-info hidden" id="info-{$baguette->getId()}">
+			<div n:if="$iterator->isEven()" class="triangle left-down"></div>
+			<div n:if="$iterator->isOdd()" class="triangle left-up"></div>
+			<div class='row main'>
+				<div class="col-xs-10 col-xs-offset-1 col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1">
+					<div class="row">
+						<div class="col-xs-8">
+							<h3>{$baguette->getBaguetteName()} bageta</h3>
+						</div>
+						<div class="col-xs-4">
+							<a href='javascript:close({$baguette->getId()})' class="close"><i class="glyphicon glyphicon-remove"></i></a>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xs-12">
+							<p class='desc'>{$baguette->getBaguetteDesc()}</p>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xs-12">
+							<table>
+								<tr>
+									<td>Náplň:</td>
+									<td>{implode(', ', $baguette->getFillingsArray())}</td>
+								</tr>
+								<tr>
+									<td>Pečivo:</td>
+									<td>{$baguette->getBakedGoods()->getName()}</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+					<div class="row allergens">
+						<div class="col-xs-6">
+							<table>
+								<tr>
+									<td><a class="allergens" href='{$basePath}/img/alergeny.jpg' target="_blank">Alergeny:</a></td>
+									<td><a class="allergens" href='{$basePath}/img/alergeny.jpg' target="_blank">{implode(', ', $baguette->getAllergens())}</a></td>
+								</tr>
+							</table>
+						</div>
+						<div class="col-xs-6 counter text-right">
+							<a href='javascript:counterMinus({$baguette->getId()})'><i class="glyphicon glyphicon-minus"></i></a><!--
+								--><input type="text" value="1" id="counter-{$baguette->getId()}"><!--
+								--><a href='javascript:counterPlus({$baguette->getId()})'><i class="glyphicon glyphicon-plus"></i></a>
+							<a class='addToCart' n:href="AddToCart!, $baguette->getId()">Do košíku</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{/block}
+{block scripts}
+<script src="{$basePath}/js/OurMenuInteraction.js"></script>
+{/block}

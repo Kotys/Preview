@@ -1,0 +1,41 @@
+{* Copyright (c) 2016 Jan Kotrba https://jkotrba.net/ *}
+{block pageHeader}Naše menu | Obsah menu{/block}
+{block content}
+<div class="row">
+	<div class="col-lg-6">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				Všechny položky
+			</div>
+			<div class="panel-body">
+				<div class="table-responsive" n:if="$baguettes">
+					<table class="table">
+						<thead>
+							<tr>
+								<th style="width:45%">Název</th>
+								<th style="text-align:center;width:15%;">Cena</th>
+								<th>Priorita</th>
+								<th>Alergeny</th>
+								<th class="text-right">Akce</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr n:foreach="$baguettes as $baguette">
+								<td>{$baguette->getBaguetteName()}</td>
+								<td style="text-align:center">{$baguette->getPrice()} Kč</td>
+								<td n:if="$baguette->getPriority() == 3">Nejvyšší</td>
+								<td n:if="$baguette->getPriority() == 2">Normální</td>
+								<td n:if="$baguette->getPriority() == 1">Nízká</td>
+								<td n:if="$baguette->getAllergens()">{implode(', ', $baguette->getAllergens())}</td>
+								<td n:if="!$baguette->getAllergens()">Žádné</td>
+								<td class="actions text-right"><a n:href="Remove!, $baguette->getId()">Odstranit</a></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<p n:if="!$baguettes">Žádné bagety.</p>
+			</div>
+		</div>
+	</div>
+</div>
+{/block}

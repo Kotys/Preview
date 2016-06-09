@@ -1,0 +1,47 @@
+{* Copyright (c) 2016 Jan Kotrba https://jkotrba.net/ *}
+{block style}
+<link rel="stylesheet" href="{$basePath}/css/builder.css">
+{/block}
+{block content}
+<div class="builder customBuilder">
+	<div class="container">
+		<div class="row row-eq-height">
+			<div class="col-xs-1 arrows"></div>
+			<div class="col-xs-10">
+				{include '_builderMenu.latte'}
+				<div class="row description text-center">
+					<h2>Pečivo</h2>
+					<p>Tvoří základ každé bagety, a proto je toto<br/>
+						nejdůležitější rozhonutí. Vyberte si z několika druhů<br/>
+						úžasného pečiva a zvolte si, jak velkou bagetu chcete.
+					</p>
+				</div>
+				<div class="row simple-selection">
+					<div class="col-lg-10 col-lg-offset-1 flex">
+						<form n:name="selectBakedGoods">
+							<div class="row">
+								{foreach $form['bakedGoods']->items as $key => $label}
+								{var $customLabel = explode('~', $label);}
+								<div class="col-md-6">
+									<div class="row row-eq-height">
+										<div class="col-xs-9">
+											<input type="radio" n:name="bakedGoods:$key"/>
+											<label n:name="bakedGoods:$key"><span></span> {$customLabel[0]}</label>
+										</div>
+										<div class="col-xs-3 price"><span>{$customLabel[1]}</span> Kč</div>
+									</div>
+								</div>
+								{/foreach}
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+			<div class="col-xs-1 arrows"><a class="arrow-right" n:href="NextStep!" n:if="!$nav->isLast()"></a></div>
+		</div>
+	</div>
+</div>
+{/block}
+{block scripts}
+<script src="{$basePath}/js/builderKeyNav.min.js"></script>
+{/block}

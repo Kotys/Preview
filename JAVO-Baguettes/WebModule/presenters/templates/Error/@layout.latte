@@ -1,0 +1,28 @@
+{block|strip}
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<title>Chyba {$code} | JAVO Baguettes</title>
+	<meta http-equiv="cache-control" content="max-age=86400" />
+    <meta http-equiv="cache-control" content="public" />
+	<link rel="stylesheet" href="{$basePath}/css/bootstrap.min.css">
+	<link rel="stylesheet" href="{$basePath}/css/error-page.css?v={time()}">
+</head>
+<body>
+	<div class="row">
+    	<div class="col-lg-4 col-lg-offset-4 col-md-6 col-md-offset-3 col-xs-12 text-center">
+    		<img src="{$basePath}/img/logo.svg"><br/>
+    	</div>
+    	<div class="col-lg-4 col-lg-offset-4 col-md-6 col-md-offset-3 col-xs-12">
+    		<div id="error-body">
+    			<h1>Chyba</h1>
+    			<p>{include text}</p>
+    			<p><small>kód chyby: {$code}</small></p>
+    		</div>
+        </div>
+    </div>
+</body>
+</html>
+{/block}

@@ -1,0 +1,216 @@
+{* Copyright (c) 2016 Jan Kotrba https://jkotrba.net/ *}
+{block style}
+<link rel="stylesheet" href="{$basePath}/css/cart-page.css">
+{/block}
+{block content}
+<div class="container cart">
+	<div class="row text-center">
+		<div class="col-md-12">
+			<img src="{$basePath}/img/cart.png" class="cartImg">
+			<h2 n:block="title">Košík</h2>
+			<p>
+				Je váš nákup v pořádku?<br/>
+				Pokud jste s objednávkou spokojeni, nechte si Vaši objednávku připravit.<br/>
+			</p>
+		</div>
+	</div>
+	<div class="row text-center">
+		<div class="col-md-12">
+			<h3>Vaše objednávka</h3>
+		</div>
+	</div>
+	<div class="row text-center">
+		<div class="col-lg-6 col-lg-offset-3 col-md-10 col-md-offset-1">
+			<table class="table list">
+				<tr n:foreach="$cart->getBaguettes() as $row => $baguette">
+					<td>
+						{$baguette->getBaguetteName()} <img src="{$basePath}/img/arrow.png" class="showMore">
+						<div class="moreInfo">
+							<table>
+								<tr>
+									<td>Náplň:</td>
+									<td>{implode(', ', $baguette->getFillingsArray())}</td>
+								</tr>
+								<tr>
+									<td>Pečivo:</td>
+									<td>{$baguette->getBakedGoods()->getName()}</td>
+								</tr>
+								<tr>
+									<td>Dresink:</td>
+									<td>{implode(', ', $baguette->getDressingArray())}</td>
+								</tr>
+								<tr>
+									<td><a class="allergens" href='{$basePath}/img/alergeny.jpg' target="_blank">Alergeny:</a></td>
+									<td><a class="allergens" href='{$basePath}/img/alergeny.jpg' target="_blank">{implode(', ', $baguette->getAllergens())}</a></td>
+								</tr>
+								<tr>
+									<td colspan="2"><a n:href="RemoveFromCart!, $row, $baguette->getType()"><i class="glyphicon glyphicon-remove"></i> Odstranit z košíku</a></td>
+								</tr>
+							</table>
+						</div>
+					</td>
+					<td>
+						<span>{$baguette->getPrice()}</span> Kč
+					</td>
+				</tr>
+				<tr class="count" n:if="!$cart->getCount()">
+					<td>Bohužel, zatím nemáte co kupovat.</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+	{if $cart->getCount()}
+	<div class="row heading">
+		<div class="col-lg-6 col-lg-offset-3 col-md-10 col-md-offset-1">
+			<h4><span class="circle">1</span>Fakturační údaje</h4>
+		</div>
+	</div>
+	<form n:name="submitOrderForm">
+		<div class="row text-center">
+			<div class="col-lg-6 col-lg-offset-3 col-md-10 col-md-offset-1">
+				<table class="table address">
+					<tbody>
+						<tr>
+							<td>Jméno</td>
+							<td><input n:name="billing_firstName" type="text"></td>
+						</tr>
+						<tr>
+							<td>Příjmení</td>
+							<td><input n:name="billing_lastName" type="text"></td>
+						</tr>
+						<tr>
+							<td>E-mail</td>
+							<td><input n:name="billing_email" type="text"></td>
+						</tr>
+						<tr>
+							<td>Telefon</td>
+							<td><input n:name="billing_phone" type="text"></td>
+						</tr>
+						<tr>
+							<td>Ulice a č.p.</td>
+							<td><input n:name="billing_street" type="text"></td>
+						</tr>
+						<tr>
+							<td>Město</td>
+							<td><input n:name="billing_town" type="text"></td>
+						</tr>
+						<tr>
+							<td>PSČ</td>
+							<td><input n:name="billing_psc" type="text"></td>
+						</tr>
+						<tr>
+							<td>Stát</td>
+							<td><input n:name="billing_province" type="text"></td>
+						</tr>
+						<tr class="otherAddress">
+							<td colspan="2">
+								<input type="checkbox" n:name="differentDeliveryAddress" value="2" id="otherAddress"/>
+								<label n:name="differentDeliveryAddress" for="otherAddress"><span></span> Liší se fakturační adresa od dodací?</label>
+							</td>
+						</tr>
+					</tbody>
+					<tbody class="otherAddressGroup{if $form['differentDeliveryAddress']->value} visible{/if}">
+						<tr>
+							<td colspan="2">
+								<h5><span class="circle"><span class="glyphicon glyphicon-home"></span></span>Dodací údaje</h5>
+							</td>
+						</tr>
+						<tr>
+							<td>Jméno</td>
+							<td><input n:name="delivery_firstName" type="text"></td>
+						</tr>
+						<tr>
+							<td>Příjmení</td>
+							<td><input n:name="delivery_lastName" pype="text"></td>
+						</tr>
+						<tr>
+							<td>Ulice a č.p.</td>
+							<td><input n:name="delivery_street" type="text"></td>
+						</tr>
+						<tr>
+							<td>Město</td>
+							<td><input n:name="delivery_town" type="text"></td>
+						</tr>
+						<tr>
+							<td>PSČ</td>
+							<td><input n:name="delivery_psc" type="text"></td>
+						</tr>
+						<tr>
+							<td>Stát</td>
+							<td><input n:name="delivery_province" type="text"></td>
+						</tr>
+					</tbody>
+					<tbody>
+						<tr class="selectDeliveryTime">
+							<td>Kdy si přejete mít jídlo připravené/doručené?</td>
+							<td>
+								<select n:name="delivery_day" class="selectDay"></select><br/>
+								<select n:name="delivery_hour"></select>
+								<select n:name="delivery_minute"></select>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div class="row heading">
+			<div class="col-lg-6 col-lg-offset-3 col-md-10 col-md-offset-1">
+				<h4><span class="circle">2</span>Způsob dopravy</h4>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-6 col-lg-offset-3 deliveryType col-md-10 col-md-offset-1">
+				<div class="row">
+					<div class="col-xs-12">
+						<input type="radio" n:name="deliveryType:self" id="option1"/>
+						<label name="test" for="option1"><span></span> Nákup si vyzvednu u vás</label>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12">
+						<input type="radio" n:name="deliveryType:delivery" id="javo-delivery"/>
+						<label name="test" for="javo-delivery"><span></span> JAVO Delivery</label>
+						<div class='serviceDescription'>V okruhu 10km<br/>rozvoz zdarma!</div>
+						<p>Naše společnost váš nákup doručí až na vámi zadanou adresu,<br/> nad 10 km se připlácí 5kč za 2 km.</p>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row heading">
+			<div class="col-lg-8 col-lg-offset-3 col-md-10 col-md-offset-1">
+				<h4><span class="circle">3</span>Platba</h4>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-6 col-lg-offset-3 col-md-10 col-md-offset-1 paymentType">
+				<div class="row">
+					<input type="radio" n:name="paymentMethod:cash" id="option3"/>
+					<label name="test" for="option3"><span></span> Hotově</label>
+				</div>
+				<div class="row">
+					<input type="radio" n:name="paymentMethod:credit" id="option4"/>
+					<label name="test" for="option4"><span></span> Kartou</label>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12 text-center submitOrder">
+				{snippet PricePanel}
+				<div>Cena baget: <span>{$baguettesPrice} KČ</span></div>
+				{if $deliveryPrice > 0}
+				<div>Cena dopravy: <span>{$deliveryPrice} KČ</span></div>
+				{/if}
+				<div>Celkem k zaplaceni: <span>{$totalPrice} KČ</span></div>
+				{/snippet}
+				<a n:href="TruncateCart!" class="btn btn-default truncate">Vysypat košík</a>
+				<input n:name="refresh" class="btn btn-default ajax recount" value="Přepočítat">
+				<input n:name="submit" type="submit" class="btn btn-default" value="Objednat">
+			</div>
+		</div>
+	</form>
+	{/if}
+</div>
+{/block}
+{block scripts}
+<script src="{$basePath}/js/CartInteraction.min.js"></script>
+{/block}

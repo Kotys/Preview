@@ -1,0 +1,51 @@
+{* Copyright (c) 2016 Jan Kotrba https://jkotrba.net/ *}
+{block pageHeader}Suroviny | Upravit{/block}
+{block content}
+<div class="row">
+	<div class="col-lg-4">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				Přidat
+			</div>
+			<div class="panel-body">
+				<form n:name="editResourceForm" role="form">
+					<div class="form-group">
+						<label>Název</label>
+						<input n:name="name" class="form-control" autocomplete="off">
+					</div>
+					<div class="form-group input-group">
+						<input type="text" n:name="price" class="form-control">
+						<span class="input-group-addon">Kč</span>
+					</div>
+					<div class="form-group">
+						<label>Druh</label>
+						{foreach $form[group]->items as $type => $label}
+						<div class="radio">
+							<label>
+							<input type="radio" n:name="group:$type" id="optionsRadios{$iterator->getCounter()}" value="{$type}" {if $resource->getType() == $type} checked=""{/if}> {$label}
+							</label>
+						</div>
+						{/foreach}
+					</div>
+					<div class="form-group">
+						<label>Alergeny</label>
+						{foreach $form[allergens]->items as $key => $label}
+						<label class="checkbox">
+						<label n:name="allergens:$key"><input n:name="allergens:$key"> <b>{$key}.</b> {$label}</label>
+						</label>
+						{/foreach}
+					</div>
+					<div class="row">
+						<div class="col-lg-6">
+							<button type="reset" class="btn btn-default">Zrušit</button>
+						</div>
+						<div class="col-lg-6 text-right">
+							<input n:name="save" type="submit" class="btn btn-warning" value="Uložit">
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+{/block}

@@ -1,0 +1,31 @@
+{* Copyright (c) 2016 Jan Kotrba https://jkotrba.net/ *}
+{block style}
+<link rel="stylesheet" href="{$basePath}/css/builder.css">
+{/block}
+{block content}
+<div class="builder">
+	<div class="container">
+		<div class="row row-eq-height ">
+			<div class="col-xs-1 arrows"></div>
+			<div class="col-xs-10">
+				<div class="row text-center">
+					<div class="col-xs-12">
+						<div class="description">
+							Vítejte.<br/>
+							Zde si připravíte vlastní bagetu,<br/>
+							stačí Vám k tomu jen pár jednoduchých kroků.
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-xs-1 arrows"><a class="arrow-right" n:href="Builder:compilation, 1"></a></div>
+		</div>
+	</div>
+</div>
+{/block}
+{block scripts}
+<script>
+	$('body').addClass('customBuilderBody');
+</script>
+<script src="{$basePath}/js/builderKeyNav.min.js"></script>
+{/block}

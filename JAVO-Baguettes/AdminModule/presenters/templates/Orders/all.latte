@@ -1,0 +1,41 @@
+{* Copyright (c) 2016 Jan Kotrba https://jkotrba.net/ *}
+{block pageHeader}Objednávky | Všechny{/block}
+{block content}
+<div class="row">
+	<div class="col-lg-9">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				Všechny položky
+			</div>
+			<div class="panel-body">
+				<div class="table-responsive" n:if="$orders">
+					<table class="table">
+						<thead>
+							<tr>
+								<th>Priorita</th>
+								<th>Jméno</th>
+								<th>Email</th>
+								<th>Detaily</th>
+								<th>Objednáno</th>
+								<th>Stav</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr n:foreach="$orders as $order" n:class="!$order->getProcessed() ? not-executed">
+								<td>{if !$order->getProcessed()}<span class="priority">#{$iterator->getCounter()}</span>{/if}</td>
+								<td>{$order->getBillingLastName()} {$order->getBillingFirstName()}</td>
+								<td>{$order->getBillingEmail()}</td>
+								<td><a n:href='Orders:detail, $order->getId()'>Detaily objednávky</a></td>
+								<td>{$order->getDateOfPurchase()|date:'%d.%m.%Y'} {$order->getDateOfPurchase()|date:'H:i'}</td>
+								<td n:if="$order->getProcessed()">Vyřízeno</td>
+								<td n:if="!$order->getProcessed()">Čeká na vyřízení - <a n:href="ExecuteOrder!, $order->getId()">dokončit</a></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<p n:if="!$orders">Žádné objednávky.</p>
+			</div>
+		</div>
+	</div>
+</div>
+{/block}

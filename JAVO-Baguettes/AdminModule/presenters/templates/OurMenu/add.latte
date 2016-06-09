@@ -1,0 +1,135 @@
+{* Copyright (c) 2016 Jan Kotrba https://jkotrba.net/ *}
+{block pageHeader}Naše menu | Přidat do menu{/block}
+{block head}
+<link href="{$basePath}/adminResources/css/timeline.css" rel="stylesheet">
+{/block}
+{block content}
+<div class="row">
+	<form n:name="addToMenuForm">
+		<div class="row">
+			<div class="col-lg-6">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						Základní informace
+					</div>
+					<div class="panel-body">
+						<div class="form-group">
+							<label>Název bagety</label>
+							<input n:name="name" class="form-control" autocomplete="off">
+						</div>
+						<div class="form-group">
+							<label>Lákadlo</label>
+							<textarea n:name="temptation" class="form-control"  autocomplete="off"></textarea>
+						</div>
+						<div class="form-group">
+							<label>Popis</label>
+							<textarea n:name="desc" class="form-control"  autocomplete="off"></textarea>
+						</div>
+						<div class="form-group">
+							<label>Cena</label>
+							<input n:name="price" autocomplete="off" class="form-control">
+							<p class="help-block">Výchozí hodnota 120% ceny surovin.</p>
+						</div>
+						<div class="form-group">
+							<label>Priorita</label>
+							<select n:name="priority" autocomplete="off" class="form-control"></select>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-6">
+				<ul class="timeline">
+					<li>
+						<div class="timeline-badge warning"><i class="fa fa-angle-down"></i></div>
+						<div class="timeline-panel">
+							<div class="timeline-heading">
+								<h4 class="timeline-title">Pečivo</h4>
+							</div>
+							<div class="timeline-body">
+								<div class="form-group">
+									<select n:name="bakedGoods" class="form-control"></select>
+								</div>
+							</div>
+						</div>
+					</li>
+					<li class="timeline-inverted">
+						<div class="timeline-badge warning"><i class="fa fa-angle-down"></i></div>
+						<div class="timeline-panel">
+							<div class="timeline-heading">
+								<h4 class="timeline-title">Náplň bagety</h4>
+							</div>
+							<div class="timeline-body">
+								{foreach $form[fillings]->items as $key => $label}
+								<label class="checkbox">
+								<label n:name="fillings:$key"><input n:name="fillings:$key"> {$label}</label>
+								</label>
+								{/foreach}
+							</div>
+						</div>
+					</li>
+					<li>
+						<div class="timeline-badge warning"><i class="fa fa-angle-down"></i>
+						</div>
+						<div class="timeline-panel">
+							<div class="timeline-heading">
+								<h4 class="timeline-title">Zelenina</h4>
+							</div>
+							<div class="timeline-body">
+								{foreach $form[vegetable]->items as $key => $label}
+								<label class="checkbox">
+								<label n:name="vegetable:$key"><input n:name="vegetable:$key"> {$label}</label>
+								</label>
+								{/foreach}
+							</div>
+						</div>
+					</li>
+					<li class="timeline-inverted">
+						<div class="timeline-badge warning"><i class="fa fa-angle-down"></i></div>
+						<div class="timeline-panel">
+							<div class="timeline-heading">
+								<h4 class="timeline-title">Dresink</h4>
+							</div>
+							<div class="timeline-body">
+								{foreach $form[dressing]->items as $key => $label}
+								<label class="checkbox">
+								<label n:name="dressing:$key"><input n:name="dressing:$key"> {$label}</label>
+								</label>
+								{/foreach}
+							</div>
+						</div>
+					</li>
+					<li class="timeline">
+						<div class="timeline-badge"><i class="fa fa-angle-down"></i></div>
+						<div class="timeline-panel">
+							<div class="timeline-heading">
+								<h4 class="timeline-title">Náhled levý</h4>
+							</div>
+							<div class="timeline-body">
+								<input n:name="imageLeft" type="file">
+							</div>
+						</div>
+					</li>
+					<li class="timeline-inverted">
+						<div class="timeline-badge"><i class="fa fa-angle-down"></i></div>
+						<div class="timeline-panel">
+							<div class="timeline-heading">
+								<h4 class="timeline-title">Náhled pravý</h4>
+							</div>
+							<div class="timeline-body">
+								<input n:name="imageRight" type="file">
+							</div>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div class="col-lg-6">
+			<div class="col-lg-4 col-lg-offset-4 padding-50 col-xs-6 col-xs-offset-3">
+				<input n:name="add" class="btn btn-lg btn-success btn-block" value="Přidat do menu">
+			</div>
+		</div>
+	</form>
+</div>
+{/block}
